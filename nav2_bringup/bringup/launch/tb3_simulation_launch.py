@@ -142,16 +142,16 @@ def generate_launch_description():
 
     urdf = os.path.join(bringup_dir, 'urdf', 'turtlebot3_waffle.urdf')
 
-    start_robot_state_publisher_cmd = Node(
-        condition=IfCondition(use_robot_state_pub),
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher',
-        namespace=namespace,
-        output='screen',
-        parameters=[{'use_sim_time': use_sim_time}],
-        remappings=remappings,
-        arguments=[urdf])
+    #start_robot_state_publisher_cmd = Node(
+    #    condition=IfCondition(use_robot_state_pub),
+    #    package='robot_state_publisher',
+    #    executable='robot_state_publisher',
+    #    name='robot_state_publisher',
+    #    namespace=namespace,
+    #    output='screen',
+    #    parameters=[{'use_sim_time': use_sim_time}],
+    #    remappings=remappings,
+    #    arguments=[urdf])
 
     rviz_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -192,11 +192,11 @@ def generate_launch_description():
     ld.add_action(declare_world_cmd)
 
     # Add any conditioned actions
-    ld.add_action(start_gazebo_server_cmd)
-    ld.add_action(start_gazebo_client_cmd)
+    #ld.add_action(start_gazebo_server_cmd)
+    #d.add_action(start_gazebo_client_cmd)
 
     # Add the actions to launch all of the navigation nodes
-    ld.add_action(start_robot_state_publisher_cmd)
+    #ld.add_action(start_robot_state_publisher_cmd)
     ld.add_action(rviz_cmd)
     ld.add_action(bringup_cmd)
 

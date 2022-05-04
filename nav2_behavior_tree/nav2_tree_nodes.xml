@@ -77,6 +77,14 @@
         <output_port name="selected_goal_checker">Name of the selected goal checker received from the topic subcription</output_port>
     </Action>
 
+    <Action ID="CallMapfService">
+        <input_port name="server_name">Service name</input_port>
+        <input_port name="rob_id">Name of the topic to receive goal checker selection commands</input_port>
+        <input_port name="goal">Default goal checker of the controller selector</input_port>
+        <input_port name="current_pose">Default goal checker of the controller selector</input_port>
+        <output_port name="goals">Name of the selected goal checker received from the topic subcription</output_port>
+    </Action>
+
     <Action ID="Spin">
       <input_port name="spin_dist">Spin distance</input_port>
     </Action>

@@ -39,8 +39,8 @@ def generate_launch_description():
 
     # Names and poses of the robots
     robots = [
-        {'name': 'robot1', 'x_pose': 0.0, 'y_pose': 0.5, 'z_pose': 0.01},
-        {'name': 'robot2', 'x_pose': 0.0, 'y_pose': -0.5, 'z_pose': 0.01}]
+        {'name': 'robotino1', 'x_pose': 0.0, 'y_pose': 0.5, 'z_pose': 0.01},
+        {'name': 'robotino2', 'x_pose': 0.0, 'y_pose': -0.5, 'z_pose': 0.01}]
 
     # Simulation settings
     world = LaunchConfiguration('world')
@@ -68,16 +68,16 @@ def generate_launch_description():
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
         'map',
-        default_value=os.path.join(bringup_dir, 'maps', 'turtlebot3_world.yaml'),
+        default_value=os.path.join(bringup_dir, 'maps', 'mymap.yaml'),
         description='Full path to map file to load')
 
-    declare_robot1_params_file_cmd = DeclareLaunchArgument(
-        'robot1_params_file',
+    declare_robotino1_params_file_cmd = DeclareLaunchArgument(
+        'robotino1_params_file',
         default_value=os.path.join(bringup_dir, 'params', 'nav2_multirobot_params_1.yaml'),
         description='Full path to the ROS2 parameters file to use for robot1 launched nodes')
 
-    declare_robot2_params_file_cmd = DeclareLaunchArgument(
-        'robot2_params_file',
+    declare_robotino2_params_file_cmd = DeclareLaunchArgument(
+        'robotino2_params_file',
         default_value=os.path.join(bringup_dir, 'params', 'nav2_multirobot_params_2.yaml'),
         description='Full path to the ROS2 parameters file to use for robot2 launched nodes')
 
@@ -180,18 +180,18 @@ def generate_launch_description():
     ld.add_action(declare_simulator_cmd)
     ld.add_action(declare_world_cmd)
     ld.add_action(declare_map_yaml_cmd)
-    ld.add_action(declare_robot1_params_file_cmd)
-    ld.add_action(declare_robot2_params_file_cmd)
+    ld.add_action(declare_robotino1_params_file_cmd)
+    ld.add_action(declare_robotino2_params_file_cmd)
     ld.add_action(declare_use_rviz_cmd)
     ld.add_action(declare_autostart_cmd)
     ld.add_action(declare_rviz_config_file_cmd)
     ld.add_action(declare_use_robot_state_pub_cmd)
 
     # Add the actions to start gazebo, robots and simulations
-    ld.add_action(start_gazebo_cmd)
+    #ld.add_action(start_gazebo_cmd)
 
-    for spawn_robot_cmd in spawn_robots_cmds:
-        ld.add_action(spawn_robot_cmd)
+    #for spawn_robot_cmd in spawn_robots_cmds:
+    #    ld.add_action(spawn_robot_cmd)
 
     for simulation_instance_cmd in nav_instances_cmds:
         ld.add_action(simulation_instance_cmd)

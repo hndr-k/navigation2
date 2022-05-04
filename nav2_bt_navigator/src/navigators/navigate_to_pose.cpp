@@ -107,7 +107,10 @@ NavigateToPoseNavigator::onLoop()
     feedback_utils_.global_frame, feedback_utils_.robot_frame,
     feedback_utils_.transform_tolerance);
 
+
+
   auto blackboard = bt_action_server_->getBlackboard();
+
 
   try {
     // Get current path points

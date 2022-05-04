@@ -17,6 +17,7 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(nav2_util REQUIRED)
+find_package(mapf_actions REQUIRED)
 
 nav2_package()
 
@@ -41,6 +42,7 @@ set(dependencies
   std_msgs
   std_srvs
   nav2_util
+  mapf_actions
 )
 
 add_library(${library_name} SHARED
@@ -71,6 +73,9 @@ list(APPEND plugin_libs nav2_wait_action_bt_node)
 
 add_library(nav2_clear_costmap_service_bt_node SHARED plugins/action/clear_costmap_service.cpp)
 list(APPEND plugin_libs nav2_clear_costmap_service_bt_node)
+
+add_library(nav2_call_mapf_service_bt_node SHARED plugins/action/call_mapf_service.cpp)
+list(APPEND plugin_libs nav2_call_mapf_service_bt_node)
 
 add_library(nav2_is_stuck_condition_bt_node SHARED plugins/condition/is_stuck_condition.cpp)
 list(APPEND plugin_libs nav2_is_stuck_condition_bt_node)
