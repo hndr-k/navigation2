@@ -223,8 +223,23 @@ WaypointFollower::followWaypoints()
       RCLCPP_INFO(
         get_logger(), "Succeeded processing waypoint %i, processing waypoint task execution",
         goal_index);
-      bool is_task_executed = waypoint_task_executor_->processAtWaypoint(
-        goal->poses[goal_index], goal_index);
+        bool is_task_executed;
+        if(goal_index < goal->poses.size() - 1)
+        {
+          if((goal->poses[goal_index].pose.position.x == goal->poses[goal_index + 1].pose.position.x) &&
+              (goal->poses[goal_index].pose.position.y == goal->poses[goal_index +1].pose.position.y))
+              {
+                is_task_executed = waypoint_task_executor_->processAtWaypoint(
+                goal->poses[goal_index], goal_index);
+              }
+          else{
+            is_task_executed = true;
+          }
+        }
+        else {
+          is_task_executed = true;
+        }
+     
       RCLCPP_INFO(
         get_logger(), "Task execution at waypoint %i %s", goal_index,
         is_task_executed ? "succeeded" : "failed!");

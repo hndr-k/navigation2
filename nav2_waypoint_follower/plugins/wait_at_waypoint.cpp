@@ -71,6 +71,8 @@ bool WaitAtWaypoint::processAtWaypoint(
   if (!is_enabled_) {
     return true;
   }
+  
+
   RCLCPP_INFO(
     logger_, "Arrived at %i'th waypoint, sleeping for %i milliseconds",
     curr_waypoint_index,
