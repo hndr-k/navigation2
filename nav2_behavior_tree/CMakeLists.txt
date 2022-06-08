@@ -17,6 +17,7 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(nav2_util REQUIRED)
+find_package(mapf_actions REQUIRED)
 
 nav2_package()
 
@@ -41,6 +42,7 @@ set(dependencies
   std_msgs
   std_srvs
   nav2_util
+  mapf_actions
 )
 
 add_library(${library_name} SHARED
@@ -50,6 +52,9 @@ add_library(${library_name} SHARED
 ament_target_dependencies(${library_name}
   ${dependencies}
 )
+
+add_library(nav2_mapf_call_service_bt_node SHARED plugins/action/mapf_call_service.cpp)
+list(APPEND plugin_libs nav2_mapf_call_service_bt_node)
 
 add_library(nav2_compute_path_to_pose_action_bt_node SHARED plugins/action/compute_path_to_pose_action.cpp)
 list(APPEND plugin_libs nav2_compute_path_to_pose_action_bt_node)

@@ -16,6 +16,15 @@
       <input_port name="service_name">Service name</input_port>
     </Action>
 
+    <Action ID="CallMapf">
+      <input_port name="service_name">Service name</input_port>
+      <input_port name="identifier">Robotino ID</input_port>
+      <input_port name="goal">Destination to plan to</input_port>
+      <output_port name="mapf_goals">Path of MAPF planner</output_port>
+      <input_port name="global_frame">reference frame to check in</input_port>
+      <input_port name="robot_base_frame">Robot frame to check relative to global_frame</input_port>
+    </Action>
+
     <Action ID="ComputePathToPose">
       <input_port name="goal">Destination to plan to</input_port>
       <input_port name="start">Start pose of the path if overriding current robot pose</input_port>
