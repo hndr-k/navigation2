@@ -17,44 +17,42 @@
 
 #include "nav2_behavior_tree/plugins/action/compute_path_to_pose_action.hpp"
 
-namespace nav2_behavior_tree
-{
+namespace nav2_behavior_tree {
 
 ComputePathToPoseAction::ComputePathToPoseAction(
-  const std::string & xml_tag_name,
-  const std::string & action_name,
-  const BT::NodeConfiguration & conf)
-: BtActionNode<nav2_msgs::action::ComputePathToPose>(xml_tag_name, action_name, conf)
-{
-}
+    const std::string &xml_tag_name, const std::string &action_name,
+    const BT::NodeConfiguration &conf)
+    : BtActionNode<nav2_msgs::action::ComputePathToPose>(xml_tag_name,
+                                                         action_name, conf) {}
 
-void ComputePathToPoseAction::on_tick()
-{
+void ComputePathToPoseAction::on_tick() {
+  RCLCPP_INFO(rclcpp::get_logger("PLANNER"), "Help I'm alive!");
   getInput("goal", goal_.goal);
+  RCLCPP_INFO(rclcpp::get_logger("PLANNER"),
+              "Pose received! X: %4.2f, Y: %4.2f, Frame: %s",
+              goal_.goal.pose.position.x, goal_.goal.pose.position.y,
+              goal_.goal.header.frame_id.c_str());
   getInput("planner_id", goal_.planner_id);
   if (getInput("start", goal_.start)) {
     goal_.use_start = true;
   }
 }
 
-BT::NodeStatus ComputePathToPoseAction::on_success()
-{
+BT::NodeStatus ComputePathToPoseAction::on_success() {
   setOutput("path", result_.result->path);
   return BT::NodeStatus::SUCCESS;
 }
 
-}  // namespace nav2_behavior_tree
+} // namespace nav2_behavior_tree
 
 #include "behaviortree_cpp_v3/bt_factory.h"
-BT_REGISTER_NODES(factory)
-{
-  BT::NodeBuilder builder =
-    [](const std::string & name, const BT::NodeConfiguration & config)
-    {
-      return std::make_unique<nav2_behavior_tree::ComputePathToPoseAction>(
+BT_REGISTER_NODES(factory) {
+  BT::NodeBuilder builder = [](const std::string &name,
+                               const BT::NodeConfiguration &config) {
+    return std::make_unique<nav2_behavior_tree::ComputePathToPoseAction>(
         name, "compute_path_to_pose", config);
-    };
+  };
 
   factory.registerBuilder<nav2_behavior_tree::ComputePathToPoseAction>(
-    "ComputePathToPose", builder);
+      "ComputePathToPose", builder);
 }

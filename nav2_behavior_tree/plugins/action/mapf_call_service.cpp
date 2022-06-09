@@ -6,9 +6,8 @@ namespace nav2_behavior_tree {
 MapfCallService::MapfCallService(const std::string &service_node_name,
                                  const BT::NodeConfiguration &conf)
     : BtServiceNode<mapf_actions::srv::Mapf>(service_node_name, conf) {
-      RCLCPP_INFO(rclcpp::get_logger("MAPF"),
-                "MAPF call instantiated");
-    }
+  RCLCPP_INFO(rclcpp::get_logger("MAPF"), "MAPF call instantiated");
+}
 
 void MapfCallService::on_tick() {
   getInput("identifier", request_->robotino_id);
@@ -27,7 +26,13 @@ void MapfCallService::on_tick() {
   request_->start = current_pose;
 }
 BT::NodeStatus MapfCallService::on_completion() {
-  setOutput("goals", future_result_.get()->path.poses);
+  setOutput("mapf_goals", future_result_.get()->path.poses);
+  geometry_msgs::msg::PoseStamped current_mapf_;
+  current_mapf_ = future_result_.get()->path.poses[0];
+  current_mapf_.header.frame_id = "map";
+  RCLCPP_INFO(rclcpp::get_logger("MAPF"), "X: %4.2f, Y: %4.2f",
+              current_mapf_.pose.position.x, current_mapf_.pose.position.y);
+  setOutput("mapf_goal", current_mapf_);
   return BT::NodeStatus::SUCCESS;
 }
 } // namespace nav2_behavior_tree

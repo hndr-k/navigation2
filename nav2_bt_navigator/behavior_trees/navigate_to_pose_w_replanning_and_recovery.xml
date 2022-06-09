@@ -4,10 +4,10 @@
     <BehaviorTree ID="MainTree">
         <Control ID="RecoveryNode" name="NavigateRecovery" number_of_retries="6">
             <Control ID="PipelineSequence" name="NavigateWithReplanning">
-                <Action ID="MapfCallService" goal="{goal}" identifier="0" mapf_goals="{goals}" service_name="/off_field/mapf_plan" robot_base_frame="robotino1base_link"/>
+                <Action ID="MapfCallService" goal="{goal}" identifier="0" mapf_goal="{mapf_goal}" mapf_goals="{goals}" robot_base_frame="robotino1base_link" service_name="/off_field/mapf_plan"/>
                 <Decorator ID="RateController" hz="1.0">
                     <Control ID="RecoveryNode" name="ComputePathToPose" number_of_retries="1">
-                        <Action ID="ComputePathToPose" goal="{goal}" path="{path}" planner_id="GridBased" start=""/>
+                        <Action ID="ComputePathToPose" goal="{mapf_goal}" path="{path}" planner_id="GridBased" start=""/>
                         <ReactiveFallback name="ComputePathToPoseRecoveryFallback">
                             <Condition ID="GoalUpdated"/>
                             <Action ID="ClearEntireCostmap" name="ClearGlobalCostmap-Context" service_name="global_costmap/clear_entirely_global_costmap"/>
@@ -42,6 +42,9 @@
             <input_port name="backup_dist">Distance to backup</input_port>
             <input_port name="backup_speed">Speed at which to backup</input_port>
         </Action>
+        <Condition ID="CheckForWait">
+            <input_port name="mapf_goals"/>
+        </Condition>
         <Action ID="ClearEntireCostmap">
             <input_port name="service_name">Service name</input_port>
         </Action>
@@ -98,9 +101,10 @@
         <Action ID="MapfCallService">
             <input_port name="goal">Destination to plan to</input_port>
             <input_port name="identifier">Robotino ID</input_port>
+            <output_port name="mapf_goal">Goal of MAPF planner</output_port>
             <output_port name="mapf_goals">Path of MAPF planner</output_port>
-            <input_port name="service_name">Service name</input_port>
             <input_port name="robot_base_frame">Robot base frame </input_port>
+            <input_port name="service_name">Service name</input_port>
         </Action>
         <Action ID="NavigateThroughPoses">
             <input_port name="goals">Goals</input_port>
