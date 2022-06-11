@@ -26,7 +26,6 @@ void MapfCallService::on_tick() {
   request_->start = current_pose;
 }
 BT::NodeStatus MapfCallService::on_completion() {
-  setOutput("mapf_goals", future_result_.get()->path.poses);
   geometry_msgs::msg::PoseStamped current_mapf_;
   current_mapf_ = future_result_.get()->path.poses[0];
   current_mapf_.header.frame_id = "map";

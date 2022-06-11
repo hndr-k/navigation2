@@ -26,7 +26,6 @@ ComputePathToPoseAction::ComputePathToPoseAction(
                                                          action_name, conf) {}
 
 void ComputePathToPoseAction::on_tick() {
-  RCLCPP_INFO(rclcpp::get_logger("PLANNER"), "Help I'm alive!");
   getInput("goal", goal_.goal);
   RCLCPP_INFO(rclcpp::get_logger("PLANNER"),
               "Pose received! X: %4.2f, Y: %4.2f, Frame: %s",

@@ -24,8 +24,6 @@ public:
                            "idenftifier of robototino for MAPF request"),
         BT::InputPort<geometry_msgs::msg::PoseStamped>(
             "goal", "Destination to plan to"),
-        BT::OutputPort<std::vector<geometry_msgs::msg::PoseStamped>>(
-            "mapf_goals", "Destinations to plan through"),
         BT::OutputPort<geometry_msgs::msg::PoseStamped>("mapf_goal",
                                                         "Current Mapf Goal"),
         BT::InputPort<std::string>("global_frame", std::string("map"),
