@@ -37,5 +37,6 @@ public:
   std::string robot_base_frame_, global_frame_;
   std::shared_ptr<tf2_ros::Buffer> tf_;
   geometry_msgs::msg::PoseStamped goal_pose_;
+  int robotino_id_;
 };
 } // namespace nav2_behavior_tree

@@ -10,12 +10,14 @@ MapfCallService::MapfCallService(const std::string &service_node_name,
 }
 
 void MapfCallService::on_tick() {
-  getInput("identifier", request_->robotino_id);
   getInput("goal", request_->goal);
   getInput("global_frame", global_frame_);
-  getInput("robot_base_frame", robot_base_frame_);
   tf_ = config().blackboard->get<std::shared_ptr<tf2_ros::Buffer>>("tf_buffer");
   auto node = config().blackboard->get<rclcpp::Node::SharedPtr>("node");
+  node_->get_parameter("robot_base_frame", robot_base_frame_);
+  node_->get_parameter("robotino_id", request_->robotino_id);
+  std::cout << request_->robotino_id << std::endl;
+  std::cout << robot_base_frame_ << std::endl;
 
   geometry_msgs::msg::PoseStamped current_pose;
   if (!nav2_util::getCurrentPose(current_pose, *tf_, global_frame_,

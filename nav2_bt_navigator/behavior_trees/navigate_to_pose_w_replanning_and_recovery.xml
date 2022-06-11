@@ -4,7 +4,9 @@
     <BehaviorTree ID="MainTree">
         <Control ID="RecoveryNode" name="NavigateRecovery" number_of_retries="6">
             <Control ID="PipelineSequence" name="NavigateWithReplanning">
-                <Action ID="MapfCallService" goal="{goal}" identifier="0" mapf_goal="{mapf_goal}" robot_base_frame="robotino1base_link" service_name="/off_field/mapf_plan"/>
+                <Decorator ID="RateController" hz="1.0">
+                    <Action ID="MapfCallService" goal="{goal}" identifier="0" mapf_goal="{mapf_goal}" robot_base_frame="robotino1base_link" service_name="/off_field/mapf_plan"/>
+                </Decorator>
                 <Decorator ID="RateController" hz="1.0">
                     <Control ID="RecoveryNode" name="ComputePathToPose" number_of_retries="1">
                         <Action ID="ComputePathToPose" goal="{mapf_goal}" path="{path}" planner_id="GridBased" start=""/>
@@ -15,7 +17,7 @@
                     </Control>
                 </Decorator>
                 <Control ID="RecoveryNode" name="FollowPath" number_of_retries="1">
-                    <Action ID="FollowPath" controller_id="FollowPath" goal_checker_id="GoalChecker" path="{path}"/>
+                    <Action ID="FollowPath" controller_id="FollowPath" goal_checker_id="general_goal_checker" path="{path}"/>
                     <ReactiveFallback name="FollowPathRecoveryFallback">
                         <Condition ID="GoalUpdated"/>
                         <Action ID="ClearEntireCostmap" name="ClearLocalCostmap-Context" service_name="local_costmap/clear_entirely_local_costmap"/>
