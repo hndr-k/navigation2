@@ -7,6 +7,9 @@ MapfCallService::MapfCallService(const std::string &service_node_name,
                                  const BT::NodeConfiguration &conf)
     : BtServiceNode<mapf_actions::srv::Mapf>(service_node_name, conf) {
   RCLCPP_INFO(rclcpp::get_logger("MAPF"), "MAPF call instantiated");
+  auto node = config().blackboard->get<rclcpp::Node::SharedPtr>("node");
+  node->declare_parameter("robotino_frame", std::string("base_link"));
+  node->declare_parameter("robotino_id", 2);
 }
 
 void MapfCallService::on_tick() {
@@ -14,11 +17,17 @@ void MapfCallService::on_tick() {
   getInput("global_frame", global_frame_);
   tf_ = config().blackboard->get<std::shared_ptr<tf2_ros::Buffer>>("tf_buffer");
   auto node = config().blackboard->get<rclcpp::Node::SharedPtr>("node");
-  node_->get_parameter("robot_base_frame", robot_base_frame_);
-  node_->get_parameter("robotino_id", request_->robotino_id);
-  std::cout << request_->robotino_id << std::endl;
-  std::cout << robot_base_frame_ << std::endl;
-
+  node->get_parameter("robotino_frame", robot_base_frame_);
+  node->get_parameter("robotino_id", request_->robotino_id);
+  RCLCPP_INFO(rclcpp::get_logger("MAPF"), "base_frame: %s ",
+              robot_base_frame_.c_str());
+  RCLCPP_INFO(rclcpp::get_logger("MAPF"), "robotino id : %d",
+              request_->robotino_id);
+  /*robot_base_frame_ = "robotino";
+  robot_base_frame_.append(std::to_string(request_->robotino_id + 1));
+  robot_base_frame_.append("base_link");
+  RCLCPP_INFO(rclcpp::get_logger("MAPF"), "base frame new: %s",
+              robot_base_frame_.c_str());*/
   geometry_msgs::msg::PoseStamped current_pose;
   if (!nav2_util::getCurrentPose(current_pose, *tf_, global_frame_,
                                  robot_base_frame_, 0.2)) {
