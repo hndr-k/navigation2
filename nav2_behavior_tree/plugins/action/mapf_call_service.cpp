@@ -23,11 +23,6 @@ void MapfCallService::on_tick() {
               robot_base_frame_.c_str());
   RCLCPP_INFO(rclcpp::get_logger("MAPF"), "robotino id : %d",
               request_->robotino_id);
-  /*robot_base_frame_ = "robotino";
-  robot_base_frame_.append(std::to_string(request_->robotino_id + 1));
-  robot_base_frame_.append("base_link");
-  RCLCPP_INFO(rclcpp::get_logger("MAPF"), "base frame new: %s",
-              robot_base_frame_.c_str());*/
   geometry_msgs::msg::PoseStamped current_pose;
   if (!nav2_util::getCurrentPose(current_pose, *tf_, global_frame_,
                                  robot_base_frame_, 0.2)) {
