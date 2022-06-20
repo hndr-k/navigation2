@@ -21,6 +21,7 @@
       <input_port name="identifier">Robotino ID</input_port>
       <input_port name="goal">Destination to plan to</input_port>
       <output_port name="mapf_goals">Path of MAPF planner</output_port>
+      <output_port name="mapf_poses"> Complete Mapf plan </output_port>
       <input_port name="global_frame">reference frame to check in</input_port>
       <input_port name="robot_base_frame">Robot frame to check relative to global_frame</input_port>
     </Action>

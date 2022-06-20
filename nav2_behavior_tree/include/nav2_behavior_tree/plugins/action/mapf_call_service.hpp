@@ -19,19 +19,21 @@ public:
   void on_tick() override;
   BT::NodeStatus on_completion() override;
   static BT::PortsList providedPorts() {
-    return providedBasicPorts({
-        BT::InputPort<int>("identifier",
-                           "idenftifier of robototino for MAPF request"),
-        BT::InputPort<geometry_msgs::msg::PoseStamped>(
-            "goal", "Destination to plan to"),
-        BT::OutputPort<geometry_msgs::msg::PoseStamped>("mapf_goal",
-                                                        "Current Mapf Goal"),
-        BT::InputPort<std::string>("global_frame", std::string("map"),
-                                   "Global frame"),
-        BT::InputPort<std::string>("robot_base_frame", std::string("base_link"),
-                                   "Robot base frame"),
+    return providedBasicPorts(
+        {BT::InputPort<int>("identifier",
+                            "idenftifier of robototino for MAPF request"),
+         BT::InputPort<geometry_msgs::msg::PoseStamped>(
+             "goal", "Destination to plan to"),
+         BT::OutputPort<geometry_msgs::msg::PoseStamped>("mapf_goal",
+                                                         "Current Mapf Goal"),
+         BT::InputPort<std::string>("global_frame", std::string("map"),
+                                    "Global frame"),
+         BT::InputPort<std::string>(
+             "robot_base_frame", std::string("base_link"), "Robot base frame"),
+         BT::OutputPort<std::vector<geometry_msgs::msg::PoseStamped>>(
+             "mapf_poses", "Mapf plan poses")
 
-    });
+        });
   }
 
   std::string robot_base_frame_, global_frame_;

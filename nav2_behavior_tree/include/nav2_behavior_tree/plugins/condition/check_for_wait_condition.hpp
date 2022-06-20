@@ -39,7 +39,7 @@ public:
    */
   static BT::PortsList providedPorts() {
     return {BT::InputPort<std::vector<geometry_msgs::msg::PoseStamped>>(
-        "mapf_goals", "incoming mapf goals")};
+        "mapf_poses", "incoming mapf goals")};
   }
 
 private:

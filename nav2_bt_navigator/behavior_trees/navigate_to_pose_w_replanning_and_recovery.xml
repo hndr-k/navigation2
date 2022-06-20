@@ -4,7 +4,7 @@
         <Control ID="RecoveryNode" name="NavigateRecovery" number_of_retries="6">
             <Control ID="PipelineSequence" name="NavigateWithReplanning">
                 <Decorator ID="RateController" hz="10.0">
-                  <Action ID="MapfCallService" goal="{goal}" identifier="0" mapf_goal="{mapf_goal}" robot_base_frame="robotino1base_link" service_name="/off_field/mapf_plan"/>
+                  <Action ID="MapfCallService" goal="{goal}" identifier="0" mapf_goal="{mapf_goal}" mapf_poses="{mapf_poses}" robot_base_frame="robotino1base_link" service_name="/off_field/mapf_plan"/>
                 </Decorator>
                 <Decorator ID="RateController" hz="10.0">
                     <Control ID="RecoveryNode" name="ComputePathToPose" number_of_retries="1">

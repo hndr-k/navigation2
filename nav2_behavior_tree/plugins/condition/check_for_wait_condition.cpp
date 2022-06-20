@@ -26,18 +26,23 @@ CheckForWait::CheckForWait(const std::string &condition_name,
                            const BT::NodeConfiguration &conf)
     : BT::ConditionNode(condition_name, conf) {
 
-  node_ = config().blackboard->get<rclcpp::Node::SharedPtr>("node");
+  // node_ = config().blackboard->get<rclcpp::Node::SharedPtr>("node");
 }
 
 BT::NodeStatus CheckForWait::tick() {
+  // node_ = config().blackboard->get<rclcpp::Node::SharedPtr>("node");
+  RCLCPP_INFO(rclcpp::get_logger("Wait Check"), "checking for wait");
 
-  getInput("goals", goals_);
+  getInput("mapf_poses", goals_);
 
   if (goals_.size() > 2) {
     if (posesEqual(goals_[0], goals_[1])) {
+      RCLCPP_INFO(rclcpp::get_logger("Wait Check"), "waiting required");
+
       return BT::NodeStatus::SUCCESS;
     }
   }
+  RCLCPP_INFO(rclcpp::get_logger("Wait Check"), "waiting not required");
 
   return BT::NodeStatus::FAILURE;
 }

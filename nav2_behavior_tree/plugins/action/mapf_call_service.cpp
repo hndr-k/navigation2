@@ -41,6 +41,7 @@ BT::NodeStatus MapfCallService::on_completion() {
   RCLCPP_INFO(rclcpp::get_logger("MAPF"), "X: %4.2f, Y: %4.2f",
               current_mapf_.pose.position.x, current_mapf_.pose.position.y);
   setOutput("mapf_goal", current_mapf_);
+  setOutput("mapf_poses", future_result_.get()->path.poses);
   return BT::NodeStatus::SUCCESS;
 }
 } // namespace nav2_behavior_tree
