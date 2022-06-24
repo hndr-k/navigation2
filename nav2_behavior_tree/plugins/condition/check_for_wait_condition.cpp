@@ -31,7 +31,7 @@ CheckForWait::CheckForWait(const std::string &condition_name,
 
 BT::NodeStatus CheckForWait::tick() {
   // node_ = config().blackboard->get<rclcpp::Node::SharedPtr>("node");
-  RCLCPP_INFO(rclcpp::get_logger("Wait Check"), "checking for wait");
+  // RCLCPP_INFO(rclcpp::get_logger("Wait Check"), "checking for wait");
 
   getInput("mapf_poses", goals_);
 
@@ -39,12 +39,12 @@ BT::NodeStatus CheckForWait::tick() {
     if (posesEqual(goals_[0], goals_[1])) {
       RCLCPP_INFO(rclcpp::get_logger("Wait Check"), "waiting required");
 
-      return BT::NodeStatus::SUCCESS;
+      return BT::NodeStatus::FAILURE;
     }
   }
-  RCLCPP_INFO(rclcpp::get_logger("Wait Check"), "waiting not required");
+  // RCLCPP_INFO(rclcpp::get_logger("Wait Check"), "waiting not required");
 
-  return BT::NodeStatus::FAILURE;
+  return BT::NodeStatus::SUCCESS;
 }
 
 bool CheckForWait::posesEqual(geometry_msgs::msg::PoseStamped pose_zero,

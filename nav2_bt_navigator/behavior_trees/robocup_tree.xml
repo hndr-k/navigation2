@@ -16,11 +16,11 @@
                         </ReactiveFallback>
                     </Control>
                 </Decorator>
-                <Fallback>
+                <ReactiveFallback>
                     <Condition ID="CheckForWait" mapf_poses="{mapf_poses}"/>
                     <Action ID="Wait" wait_duration="3"/>
-                </Fallback>
-                <Fallback>
+                </ReactiveFallback>
+                <ReactiveFallback>
                     <Inverter>
                         <Condition ID="CheckForWait" mapf_poses="{mapf_poses}"/>
                     </Inverter>
@@ -31,7 +31,7 @@
                             <Action ID="ClearEntireCostmap" name="ClearLocalCostmap-Context" service_name="local_costmap/clear_entirely_local_costmap"/>
                         </ReactiveFallback>
                     </Control>
-                </Fallback>
+                </ReactiveFallback>
                 <Condition ID="GoalReached" goal="{goal}"/>
             </Control>
             <ReactiveFallback name="RecoveryFallback">
