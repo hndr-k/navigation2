@@ -33,13 +33,17 @@ void MapfCallService::on_tick() {
 }
 BT::NodeStatus MapfCallService::on_completion() {
   geometry_msgs::msg::PoseStamped current_mapf_;
-  current_mapf_ = future_result_.get()->path.poses[0];
   if (future_result_.get()->path.poses.size() > 1) {
     current_mapf_ = future_result_.get()->path.poses[1];
+  } else if (future_result_.get()->path.poses.size() == 1) {
+    current_mapf_ = future_result_.get()->path.poses[0];
+  } else {
+    return BT::NodeStatus::FAILURE;
   }
   current_mapf_.header.frame_id = "map";
   RCLCPP_INFO(rclcpp::get_logger("MAPF"), "X: %4.2f, Y: %4.2f",
               current_mapf_.pose.position.x, current_mapf_.pose.position.y);
+
   setOutput("mapf_goal", current_mapf_);
   setOutput("mapf_poses", future_result_.get()->path.poses);
   return BT::NodeStatus::SUCCESS;
