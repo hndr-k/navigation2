@@ -31,7 +31,8 @@ public:
          BT::InputPort<std::string>(
              "robot_base_frame", std::string("base_link"), "Robot base frame"),
          BT::OutputPort<std::vector<geometry_msgs::msg::PoseStamped>>(
-             "mapf_poses", "Mapf plan poses")
+             "mapf_poses", "Mapf plan poses"),
+         BT::OutputPort<bool>("use_mapf", "use mapf plan")
 
         });
   }

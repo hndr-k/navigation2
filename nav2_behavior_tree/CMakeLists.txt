@@ -53,6 +53,9 @@ ament_target_dependencies(${library_name}
   ${dependencies}
 )
 
+add_library(nav2_use_mapf_condition_bt_node SHARED plugins/condition/use_mapf_condition.cpp)
+list(APPEND plugin_libs nav2_use_mapf_condition_bt_node)
+
 add_library(nav2_check_for_wait_condition_bt_node SHARED plugins/condition/check_for_wait_condition.cpp)
 list(APPEND plugin_libs nav2_check_for_wait_condition_bt_node)
 

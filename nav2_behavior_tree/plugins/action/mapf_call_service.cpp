@@ -35,9 +35,12 @@ BT::NodeStatus MapfCallService::on_completion() {
   geometry_msgs::msg::PoseStamped current_mapf_;
   if (future_result_.get()->path.poses.size() > 1) {
     current_mapf_ = future_result_.get()->path.poses[1];
+    setOutput("use_mapf", true);
   } else if (future_result_.get()->path.poses.size() == 1) {
     current_mapf_ = future_result_.get()->path.poses[0];
+    setOutput("use_mapf", true);
   } else {
+    setOutput("use_mapf", false);
     return BT::NodeStatus::FAILURE;
   }
   current_mapf_.header.frame_id = "map";

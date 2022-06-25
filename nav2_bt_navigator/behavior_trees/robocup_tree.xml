@@ -4,12 +4,18 @@
     <BehaviorTree ID="MainTree">
         <Control ID="RecoveryNode" name="NavigateRecovery" number_of_retries="6">
             <Control ID="PipelineSequence" name="NavigateWithReplanning">
-                <Decorator ID="RateController" hz="0.1">
-                    <Action ID="MapfCallService" goal="{goal}" identifier="0" mapf_goal="{mapf_goal}" mapf_poses="{mapf_poses}" robot_base_frame="robotino1base_link" service_name="/off_field/mapf_plan"/>
+                <Decorator ID="RateController" hz="0.5">
+                    <ReactiveFallback>
+                        <Action ID="MapfCallService" goal="{goal}" identifier="0" mapf_goal="{mapf_goal}" mapf_poses="{mapf_poses}" robot_base_frame="robotino1base_link" service_name="/off_field/mapf_plan" use_mapf="{use_mapf}"/>
+                        <Action ID="ComputePathToPose" goal="{goal}" path="{path}" planner_id="GridBased" start=""/>
+                    </ReactiveFallback>
                 </Decorator>
                 <Decorator ID="RateController" hz="10.0">
                     <Control ID="RecoveryNode" name="ComputePathToPose" number_of_retries="1">
-                        <Action ID="ComputePathToPose" goal="{mapf_goal}" path="{path}" planner_id="GridBased" start=""/>
+                        <ReactiveFallback>
+                            <Condition ID="UseMapf" use_mapf="{use_mapf}"/>
+                            <Action ID="ComputePathToPose" goal="{mapf_goal}" path="{path}" planner_id="GridBased" start=""/>
+                        </ReactiveFallback>
                         <ReactiveFallback name="ComputePathToPoseRecoveryFallback">
                             <Condition ID="GoalUpdated"/>
                             <Action ID="ClearEntireCostmap" name="ClearGlobalCostmap-Context" service_name="global_costmap/clear_entirely_global_costmap"/>
@@ -27,7 +33,7 @@
                     <Control ID="RecoveryNode" name="FollowPath" number_of_retries="1">
                         <Action ID="FollowPath" controller_id="FollowPath" goal_checker_id="general_goal_checker" path="{path}"/>
                         <ReactiveFallback name="FollowPathRecoveryFallback">
-                            <Condition ID="GoalUpdated"/>
+                            <Condition ID="GoalUpdated" name="GoalUp{path}dated{path}{path}"/>
                             <Action ID="ClearEntireCostmap" name="ClearLocalCostmap-Context" service_name="local_costmap/clear_entirely_local_costmap"/>
                         </ReactiveFallback>
                     </Control>
@@ -126,6 +132,7 @@
             <inout_port name="mapf_poses"/>
             <inout_port name="robot_base_frame"/>
             <inout_port name="service_name"/>
+            <output_port name="use_mapf"/>
         </Action>
         <Action ID="NavigateThroughPoses">
             <input_port name="goals">Goals</input_port>
@@ -175,6 +182,9 @@
             <input_port name="input_path">Path to truncate</input_port>
             <output_port name="output_path">Truncated path to utilize</output_port>
         </Action>
+        <Condition ID="UseMapf">
+            <input_port name="use_mapf"/>
+        </Condition>
         <Action ID="Wait">
             <input_port name="wait_duration">Wait time</input_port>
         </Action>
