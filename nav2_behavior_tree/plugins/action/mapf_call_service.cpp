@@ -51,6 +51,43 @@ BT::NodeStatus MapfCallService::on_completion() {
   setOutput("mapf_poses", future_result_.get()->path.poses);
   return BT::NodeStatus::SUCCESS;
 }
+
+BT::NodeStatus MapfCallService::check_future() {
+  auto node_ = config().blackboard->get<rclcpp::Node::SharedPtr>("node");
+  auto elapsed =
+      (node_->now() - sent_time_).to_chrono<std::chrono::milliseconds>();
+  auto remaining = server_timeout_ - elapsed;
+
+  if (remaining > std::chrono::milliseconds(0)) {
+    auto timeout =
+        remaining > bt_loop_duration_ ? bt_loop_duration_ : remaining;
+
+    rclcpp::FutureReturnCode rc;
+    rc = callback_group_executor_.spin_until_future_complete(future_result_,
+                                                             server_timeout_);
+    if (rc == rclcpp::FutureReturnCode::SUCCESS) {
+      request_sent_ = false;
+      BT::NodeStatus status = on_completion();
+      return status;
+    }
+
+    if (rc == rclcpp::FutureReturnCode::TIMEOUT) {
+      on_wait_for_result();
+      elapsed =
+          (node_->now() - sent_time_).to_chrono<std::chrono::milliseconds>();
+      if (elapsed < server_timeout_) {
+        return BT::NodeStatus::RUNNING;
+      }
+    }
+  }
+
+  RCLCPP_WARN(node_->get_logger(),
+              "Node timed out while executing service call to %s.",
+              service_name_.c_str());
+  request_sent_ = false;
+  setOutput("use_mapf", false);
+  return BT::NodeStatus::FAILURE;
+}
 } // namespace nav2_behavior_tree
 #include "behaviortree_cpp_v3/bt_factory.h"
 BT_REGISTER_NODES(factory) {
