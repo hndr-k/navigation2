@@ -18,6 +18,7 @@ public:
 
   void on_tick() override;
   BT::NodeStatus on_completion() override;
+  BT::NodeStatus check_future() override;
   static BT::PortsList providedPorts() {
     return providedBasicPorts(
         {BT::InputPort<int>("identifier",
