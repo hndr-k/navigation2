@@ -18,6 +18,7 @@ public:
 
   void on_tick() override;
   BT::NodeStatus on_completion() override;
+  BT::NodeStatus check_future() override;
   static BT::PortsList providedPorts() {
     return providedBasicPorts(
         {BT::InputPort<int>("identifier",
@@ -32,7 +33,9 @@ public:
              "robot_base_frame", std::string("base_link"), "Robot base frame"),
          BT::OutputPort<std::vector<geometry_msgs::msg::PoseStamped>>(
              "mapf_poses", "Mapf plan poses"),
-         BT::OutputPort<bool>("use_mapf", "use mapf plan")
+         BT::OutputPort<bool>("use_mapf", "use mapf plan"),
+         BT::OutputPort<std::vector<geometry_msgs::msg::PoseStamped>>(
+             "goals", "Mapf plan for compute through poses")
 
         });
   }

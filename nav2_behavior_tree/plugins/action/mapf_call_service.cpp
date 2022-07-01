@@ -32,9 +32,17 @@ void MapfCallService::on_tick() {
   request_->start = current_pose;
 }
 BT::NodeStatus MapfCallService::on_completion() {
+  std::vector<geometry_msgs::msg::PoseStamped> mapf_goals;
   geometry_msgs::msg::PoseStamped current_mapf_;
   if (future_result_.get()->path.poses.size() > 1) {
     current_mapf_ = future_result_.get()->path.poses[1];
+    for (uint i = 0; i < future_result_.get()->path.poses.size(); i++) {
+      if (i < (future_result_.get()->path.poses.size() - 2)) {
+        if (future_result_.get()->path.poses[i] !=
+            future_result_.get()->path.poses[i + 1])
+          mapf_goals.push_back(future_result_.get()->path.poses[i]);
+      }
+    }
     setOutput("use_mapf", true);
   } else if (future_result_.get()->path.poses.size() == 1) {
     current_mapf_ = future_result_.get()->path.poses[0];
@@ -46,7 +54,7 @@ BT::NodeStatus MapfCallService::on_completion() {
   current_mapf_.header.frame_id = "map";
   RCLCPP_INFO(rclcpp::get_logger("MAPF"), "X: %4.2f, Y: %4.2f",
               current_mapf_.pose.position.x, current_mapf_.pose.position.y);
-
+  setOutput("goals", mapf_goals);
   setOutput("mapf_goal", current_mapf_);
   setOutput("mapf_poses", future_result_.get()->path.poses);
   return BT::NodeStatus::SUCCESS;

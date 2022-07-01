@@ -7,7 +7,7 @@
                 <Decorator ID="RateController" hz="0.5">
                     <ReactiveFallback>
                         <Timeout msec="10">
-                            <Action ID="MapfCallService" goal="{goal}" identifier="0" mapf_goal="{mapf_goal}" mapf_poses="{mapf_poses}" robot_base_frame="robotino1base_link" server_timeout="10" service_name="/off_field/mapf_plan" use_mapf="{use_mapf}"/>
+                            <Action ID="MapfCallService" goal="{goal}" goals="{goals}" identifier="0" mapf_goal="{mapf_goal}" mapf_poses="{mapf_poses}" robot_base_frame="robotino1base_link" server_timeout="10" service_name="/off_field/mapf_plan" use_mapf="{use_mapf}"/>
                         </Timeout>
                         <Action ID="ComputePathToPose" goal="{goal}" path="{path}" planner_id="GridBased" start=""/>
                     </ReactiveFallback>
@@ -16,7 +16,7 @@
                     <Control ID="RecoveryNode" name="ComputePathToPose" number_of_retries="1">
                         <ReactiveFallback>
                             <Condition ID="UseMapf" use_mapf="{use_mapf}"/>
-                            <Action ID="ComputePathToPose" goal="{mapf_goal}" path="{path}" planner_id="GridBased" start=""/>
+                            <Action ID="ComputePathThroughPoses" goals="{goals}" path="{path}" planner_id="GridBased" start=""/>
                         </ReactiveFallback>
                         <ReactiveFallback name="ComputePathToPoseRecoveryFallback">
                             <Condition ID="GoalUpdated"/>
@@ -129,11 +129,12 @@
         <Condition ID="IsStuck"/>
         <Action ID="MapfCallService">
             <inout_port name="goal"/>
+            <output_port name="goals"/>
             <inout_port name="identifier"/>
             <inout_port name="mapf_goal"/>
             <inout_port name="mapf_poses"/>
             <inout_port name="robot_base_frame"/>
-            <input_port name="server_timeout"/>
+            <inout_port name="server_timeout"/>
             <inout_port name="service_name"/>
             <output_port name="use_mapf"/>
         </Action>
