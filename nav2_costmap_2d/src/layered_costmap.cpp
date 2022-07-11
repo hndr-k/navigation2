@@ -201,9 +201,9 @@ void LayeredCostmap::updateMap(double robot_x, double robot_y, double robot_yaw)
     rclcpp::get_logger(
       "nav2_costmap_2d"), "Updating area x: [%d, %d] y: [%d, %d]", x0, xn, y0, yn);
 
-  if (xn < x0 || yn < y0) {
-    return;
-  }
+  //if (xn < x0 || yn < y0) {
+  //  return;
+  //}
 
   if (filters_.size() == 0) {
     // If there are no filters enabled just update costmap sequentially by each plugin
